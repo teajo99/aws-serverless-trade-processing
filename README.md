@@ -1,3 +1,6 @@
+Architecture Diagram
+![image alt](https://github.com/teajo99/aws-serverless-trade-processing/blob/8bfc6bb52a4f98b8c75474d918272ffa1b5459bc/aws-serverless-trade-proceesing/Diagram%20Architecture%20.png)
+
 #  Trade Processing & Compliance System (AWS Serverless Architecture)
 
 ## Overview
