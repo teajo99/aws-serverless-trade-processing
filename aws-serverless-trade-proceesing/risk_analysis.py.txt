@@ -1,0 +1,16 @@
+import json
+
+def lambda_handler(event, context):
+
+    print("FULL EVENT RECEIVED:")
+    print(json.dumps(event))
+
+    for record in event['Records']:
+        message = record['Sns']['Message']
+
+        print("Risk Analysis Received Message:")
+        print(message)
+
+    return {
+        "statusCode": 200
+    }

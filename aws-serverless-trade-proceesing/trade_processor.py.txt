@@ -1,0 +1,34 @@
+import json
+import boto3
+from datetime import datetime
+
+sns = boto3.client('sns')
+
+TOPIC_ARN = 'arn:aws:sns:us-east-1:942909610648:TradeProcessingTopic'
+
+
+def lambda_handler(event, context):
+
+    # Simulated trade processing
+    trade_count = 152
+    failed_trades = 3
+
+    result = {
+        "timestamp": str(datetime.now()),
+        "status": "COMPLETED",
+        "processed_trades": trade_count,
+        "failed_trades": failed_trades,
+        "compliance_check": "PASSED"
+    }
+
+    # Send to SNS
+    sns.publish(
+        TopicArn=TOPIC_ARN,
+        Subject="Nightly Trade Processing Report",
+        Message=json.dumps(result, indent=2)
+    )
+
+    return {
+        "statusCode": 200,
+        "body": result
+    }
