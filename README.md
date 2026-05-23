@@ -1,84 +1,152 @@
-# AWS Serverless Trade Processing System
+#  Trade Processing & Compliance System (AWS Serverless Architecture)
 
 ## Overview
 
-A fully serverless event-driven system built on AWS that simulates nightly financial trade processing.
+This project simulates a **financial trade processing platform** used in banking and trading environments.
 
-It processes trades automatically, validates compliance, and distributes results using SNS fan-out architecture.
+It is designed to process end-of-day (EOD) trades, validate compliance rules, and distribute results to multiple downstream financial systems in real time.
 
----
-
-## Architecture
-
-EventBridge → Lambda → SNS → SQS + Email + Lambda
+The system is fully serverless and event-driven, built using AWS managed services.
 
 ---
 
-## AWS Services Used
+## Financial Architecture
 
-- AWS Lambda (compute)
-- Amazon EventBridge (scheduler)
-- Amazon SNS (message distribution)
-- Amazon SQS (queue system)
-- Amazon CloudWatch (logging)
+Market Trades (Simulated Batch Input)
+↓
+EventBridge (EOD Scheduler Trigger)
+↓
+TradeProcessorLambda (Trade Processing Engine)
+↓
+SNS Topic (Financial Event Bus)
+┌──────────────┬──────────────┬──────────────┐
+↓ ↓ ↓
+Compliance Queue Risk Engine Client Notifications
+(SQS) (Lambda) (Email)
 
----
-
-## How It Works
-
-1. EventBridge triggers the system on a schedule
-2. TradeProcessorLambda processes simulated trade data
-3. Results are published to SNS topic
-4. SNS distributes messages to:
-   - Email subscribers
-   - SQS queue (compliance system)
-   - RiskAnalysis Lambda
 
 ---
 
-## Project Structure
+##  Business Use Case
+
+In real financial institutions:
+
+- Trades are executed throughout the day
+- End-of-day systems process all trades in batch
+- Compliance checks ensure regulatory rules are met
+- Risk systems analyze exposure
+- Reports are distributed to stakeholders
+
+This project replicates that entire workflow using AWS serverless services.
+
+---
+
+##  AWS Services Used
+
+- **AWS Lambda** → Trade processing + risk analysis
+- **Amazon EventBridge** → Scheduled EOD trigger
+- **Amazon SNS** → Financial event distribution bus
+- **Amazon SQS** → Compliance message queue
+- **Amazon CloudWatch** → Logging and audit trail
+
+---
+
+## System Workflow
+
+1. EventBridge triggers the system on a schedule (EOD simulation)
+2. `TradeProcessorLambda` processes trade batch
+3. Compliance and validation logic is executed
+4. Results are published to SNS (financial event bus)
+5. SNS distributes messages to:
+   - SQS queue (Compliance system)
+   - Risk analysis Lambda (risk engine)
+   - Email notifications (client reporting)
+
+---
+
+##  Project Structure
 
 aws-serverless-trade-processing/
 
-├── trade_processor.py  
-├── risk_analysis.py  
-├── README.md  
+├── trade_processor.py # Core trade processing engine
+├── risk_analysis.py # Risk analysis service
+├── README.md # Project documentation
+
+├── screenshots/ # AWS execution evidence
+├── docs/ # Architecture diagrams
+
 
 ---
 
-## Key Features
+##  Key Financial Features
 
-- Fully serverless architecture
-- Event-driven automation
-- SNS fan-out messaging pattern
-- Scalable design (no servers required)
-- Real-time distributed processing
-
----
-
-## Common Issue Fixed
-
-While testing the Risk Lambda manually, an error occurred:
-
-"KeyError: 'Records'"
-
-This happened because SNS event structure was missing when using manual Lambda testing.
-
-Fix:
-- Proper testing was done through SNS-triggered invocation instead of direct Lambda test.
+- End-of-day trade processing simulation
+- Event-driven financial messaging system
+- Multi-system distribution (risk, compliance, reporting)
+- Decoupled microservice architecture
+- Audit logging via CloudWatch
+- Scalable serverless design (no infrastructure management)
 
 ---
 
-## What I Learned
+##  Error Handling Insight
 
-- AWS event-driven architecture
-- Serverless computing concepts
-- SNS fan-out pattern
-- Lambda event handling
-- CloudWatch logging and debugging
+### Issue Encountered
+KeyError: 'Records'
+
+
+### Cause
+
+The Risk Lambda was tested manually using the AWS Lambda console, which does not include the SNS event structure.
+
+### Fix
+
+The correct execution path is:
+TradeProcessorLambda → SNS → RiskAnalysisLambda
+
+
+SNS automatically provides the correct event format.
 
 ---
 
-## Resume Summary
+##  Architecture Characteristics
 
-Built a serverless AWS trade processing system using EventBridge, Lambda, SNS, and SQS to automate financial workflows and multi-system event distribution.
+- Event-driven architecture
+- Serverless and scalable design
+- Highly decoupled system components
+- Real-world financial workflow simulation
+- Production-style messaging pattern (SNS fan-out)
+
+---
+
+##  What This Project Demonstrates
+
+This system reflects patterns used in:
+
+- Investment banking systems
+- Trading platforms
+- Risk management engines
+- Financial compliance systems
+- Distributed event processing pipelines
+
+---
+
+##  Resume Summary
+
+Built a serverless event-driven financial trade processing system on AWS using EventBridge, Lambda, SNS, and SQS to simulate end-of-day trade workflows with compliance validation, risk analysis, and distributed reporting.
+
+---
+
+##  Screenshots
+
+Include the following in `/screenshots`:
+
+- EventBridge rule configuration
+- Lambda function code
+- CloudWatch logs (execution proof)
+- SNS topic and subscriptions
+- SQS messages
+- Risk Lambda logs
+
+
+
