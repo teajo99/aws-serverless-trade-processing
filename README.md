@@ -1,6 +1,8 @@
 Architecture Diagram
 ![image alt](https://github.com/teajo99/aws-serverless-trade-processing/blob/8bfc6bb52a4f98b8c75474d918272ffa1b5459bc/aws-serverless-trade-proceesing/Diagram%20Architecture%20.png)
 
+Architecture diagram of a serverless AWS-based Trade Processing & Compliance System. Market trade data is triggered via EventBridge on a scheduled end-of-day event, processed by a Lambda function, and published to an SNS financial event bus. The SNS topic distributes messages to multiple downstream consumers including an SQS compliance queue, a risk analysis Lambda function, and email notification services. The system is fully event-driven, decoupled, and designed for scalable financial trade processing and compliance validation.
+
 #  Trade Processing & Compliance System (AWS Serverless Architecture)
 
 ## Overview
